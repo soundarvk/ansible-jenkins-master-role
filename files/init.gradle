@@ -1,0 +1,11 @@
+allprojects {
+    repositories {
+        maven {
+            url = 'https://nexus.comcast.com/nexus/content/groups/public/'
+        }
+        maven {
+            name 'jenkins'
+            url = 'https://nexus.comcast.com/nexus/content/groups/jenkins/'
+        }
+    }
+}
