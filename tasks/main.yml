@@ -1,0 +1,40 @@
+---
+- name: Install gradle binary
+  include: install_gradle.yml
+
+- name: Download jenkins enterprize war
+  become: true
+  get_url: 
+    url: "{{ jenkins_download_url }}"
+    dest: "{{ jenkins_war_path }}"
+
+- name: Deploy jenkins to tomcat (symlink)
+  file:
+    src: "{{ jenkins_war_path }}"
+    dest: "{{ tomcat_webapps_path }}/ROOT.war"
+    state: link
+
+- name: Clone the mortar project for configuring it
+  git: 
+    repo: "{{ mortar_clone_url }}"
+    dest: "{{ mortar_home_dir }}"
+
+- name: Run gradle task to download plugins
+  shell: "cd /data/mortar && /data/gradle-2.9/bin/gradle getplugins"
+
+- name: copy plugins folder to jenkins home
+  shell: "cp -n /data/mortar/plugins/* /data/jenkins_home/plugins/*"
+
+- name: Copy config.yml file for configuring jenkins
+  copy:
+      src: config.yml
+      dest: "{{ mortar_home_dir }}"
+
+- name: Configure jenkins through mortar_bootstrap shell script
+  shell: "./data/mortar/mortar_bootstrap.sh --no-provision"
+
+- name: Restart tomcat
+  service: 
+    name: tomcat8 
+    state: restart
+

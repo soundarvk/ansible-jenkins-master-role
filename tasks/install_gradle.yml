@@ -1,0 +1,32 @@
+---
+
+- name: Download gradle binary
+  get_url: 
+    url: "{{ gradle_download_url }}"
+    dest: "{{ gradle_archive_path }}"
+
+- name: Unzip the gradle archive
+  unarchive: 
+    src: "{{ gradle_archive_path }}"
+    dest: "{{ home_dir }}"
+    copy: no
+
+- name: Set gradle home
+  lineinfile:
+    dest: ~/.bashrc
+    line: 'export GRADLE_HOME={{ gradle_home_dir }}' 
+    insertafter: 'EOF'
+    state: present
+
+- name: Add GRADLE_HOME/bin to path variable
+  lineinfile:
+    dest: ~/.bashrc
+    line: 'export PATH=GRADLE_HOME/bin:$PATH'
+    insertafter: 'EOF'
+    regexp: 'export PATH=\$PATH:GRADLE_HOME/bin'
+    state: present
+
+- name: Create init.gradle for downloading dependencies from nexus
+  copy: 
+    src: init.gradle
+    dest: ~/.gradle/

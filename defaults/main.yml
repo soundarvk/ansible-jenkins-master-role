@@ -1,0 +1,10 @@
+---
+
+jenkins_download_url: http://nectar-downloads.cloudbees.com/nectar/latest/nectar.war
+jenkins_home_path: "{{ jenkind_root_dir }} / jenkins_home"
+tomcat_webapps_path: /usr/share/tomcat8/webapps
+mortar_clone_url: https://mason:f16169513a2d0639f545c19c020905cf272d30e2@github.comcast.com/mortar/mortar.git
+mortar_home_dir: "{{ home_dir }}/mortar"
+gradle_download_url: https://services.gradle.org/distributions/gradle-2.9-bin.zip
+gradle_archive_path: "{{ home_dir }}/gradle-2.9-bin.zip"
+gradle_home_dir: "{{ home_dir }}/gradle-2.9"

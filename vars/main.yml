@@ -1,0 +1,6 @@
+---
+home_dir: /data
+jenkins_war_name: jenkins.war
+jenkins_war_path: "{{ home_dir }}/{{ jenkins_war_name }}"
+
+
